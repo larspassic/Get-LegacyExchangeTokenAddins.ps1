@@ -36,7 +36,7 @@ param (
     [string]$OutputPath,
 
     [Parameter(Mandatory=$true,HelpMessage="The AddInCsvPath parameter specifies the directory where you have saved the CSV of known legacy auth token add-ins from Microsoft")]
-    [ValidateScript( {Test-Path $_}, ErrorMessage = "{0} CSV of known legacy token add-ins was not found.")]
+    [ValidateScript( {Test-Path $_})]
     [string]$AddInCsvPath
 )
 
@@ -51,7 +51,7 @@ $Addins = New-Object System.Collections.ArrayList
 $CurrentProgress = $ProgressPreference
 $ProgressPreference = "Continue"
 #Loop through char 97 through 122 which is A-Z
-foreach ($char in [char[]](97..122)) {
+foreach ($char in [char[]](48..57)+[char[]](97..122)) {
     #Store the mailboxes that start with each letter in to Mailboxes
     Write-Host "Generating list of mailboxes starting with $($char)..." -ForegroundColor Green -NoNewline
     $Mailboxes = Get-Mailbox -Filter "alias -like '$($char)*'" -ResultSize unlimited
